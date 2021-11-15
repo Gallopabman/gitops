@@ -5,12 +5,22 @@ Repositorio para los assignments de la primer semana.
 
 ## Prerequisites
 
-	1. Java 8
-	2. Maven 3.3+
-	3. MySQL 5.6+
-	4. Internet connection
+	1. Internet connection
 	
-	
+
+## Tareas Realizadas
+
+	1. repo original https://gitlab.com/equipo-devops/bootcamps/semperti-bootcamp clonado y pusheado a https://gitlab.com/equipo-devops/bootcamps/sre-bootcamp-pablo-20211115	
+	2. Branch general creada
+	3. readme.md modificado 
+	4. cambios pusheados a la rama general
+	5. PR generada con cambios del primer assignment a rama master
+
+## Inconvenientes encontrados
+
+	1. Algunos comandos varian ligeramente con los acostumbrados
+	2. Interfa de Gitlab resulta poco intuitiva de momento
+
 ## Instrucciones para correr esta aplicación
 
 	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
