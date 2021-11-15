@@ -6,6 +6,7 @@ Repositorio para los assignments de la primer semana.
 ## Prerequisites
 
 	1. Internet connection
+	2. git
 	
 
 ## Tareas Realizadas
@@ -15,6 +16,22 @@ Repositorio para los assignments de la primer semana.
 	3. readme.md modificado 
 	4. cambios pusheados a la rama general
 	5. PR generada con cambios del primer assignment a rama master
+
+## Comandos ejecutados
+
+	1. apt install git - Para poder utilizar todos los comandos de git
+	2. git init - iniciar la carpeta de archivos con git
+	3. git remote add origin https://gitlab.com/equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git - asocia la carpeta con el repositorio de gitlab
+	4. git add . - para agregar los cambios a los archivos que debemos pushear
+	5. git commit -m "first commit" - para tagear el commit que sera pusheado
+	6. git config - para configurar nombre de usuario y password
+	7. git push --set-upstream origin master - para pushear todo a la rama master
+	8. git checkout -b general - crear la rama general y hacer checkout a la misma
+	9. git add .
+	10. git commit -m "assignment 0 completed"
+	11. git push - para pushear a la branch activa, en este caso general
+
+
 
 ## Inconvenientes encontrados
 
