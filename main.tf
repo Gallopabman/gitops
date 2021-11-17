@@ -43,13 +43,11 @@ resource "huaweicloud_networking_secgroup_rule_v2" "secgroup_rule_1" {
 
 resource "huaweicloud_compute_instance_v2" "basic" {
   name              = "basic"
-  image_name        = "CentOS 7.9 64bit"
+  image_name        = "Ubuntu 18.04 server 64bit"
   flavor_name       = "s3.medium.2"
   key_pair          = "KeyPair-TF"
   security_groups   = [huaweicloud_networking_secgroup_v2.secgroup_1.name]
   availability_zone = "${var.region}a"
-  cpu_core_count    = 2
-  memory_size       = 4
 
   network {
     name = huaweicloud_vpc_v1.vpc_v1.id
