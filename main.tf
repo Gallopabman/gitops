@@ -1,68 +1,50 @@
-# Configure the HuaweiCloud Provider with AK/SK
-# This will work with a single defined/default network, otherwise you need to specify network
-# to fix errors about multiple networks found.
+# Configure the HUAWEI CLOUD provider.
 provider "huaweicloud" {
-  tenant_name = var.region
-  region      = var.region
-  access_key  = var.ak
-  secret_key  = var.sk
-  # the auth url format follows: https://iam.{region_id}.myhwclouds.com:443/v3
-  auth_url    = "https://iam.${var.region}.myhuaweicloud.com/v3"
+  region     = "sa-argentina-1"
+  access_key = "LVAINUC7AJEEHXYFHSU7"
+  secret_key = "Jm1S1sRVV4B6FXtTsgAlLBZ6c0SgVed46niy5RXm"
 }
 
-# Create a VPC, Network and Subnet
-resource "huaweicloud_vpc_v1" "vpc_v1" {
-  name = "vpc-tftest"
+# Create a VPC.
+resource "huaweicloud_vpc" "example" {
+  name = "terraform_vpc"
   cidr = "192.168.0.0/16"
 }
 
-resource "huaweicloud_vpc_subnet_v1" "subnet_v1" {
-  name       = "subnet-test"
-  cidr       = "192.168.0.0/24"
-  gateway_ip = "192.168.0.1"
-  vpc_id     = huaweicloud_vpc_v1.vpc_v1.id
-}
-
-# Create Security Group and rule ssh
-resource "huaweicloud_networking_secgroup_v2" "secgroup_1" {
-  name        = "secgroup_1"
-  description = "My neutron security group"
-}
-
-resource "huaweicloud_networking_secgroup_rule_v2" "secgroup_rule_1" {
-  direction         = "ingress"
-  ethertype         = "IPv4"
-  protocol          = "tcp"
-  port_range_min    = 22
-  port_range_max    = 22
-  remote_ip_prefix  = "0.0.0.0/0"
-  security_group_id = huaweicloud_networking_secgroup_v2.secgroup_1.id
-}
-
 # Create ECS
+data "huaweicloud_availability_zones" "myaz" {}
 
-resource "huaweicloud_compute_instance_v2" "basic" {
+data "huaweicloud_compute_flavors" "myflavor" {
+  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
+  performance_type  = "normal"
+  cpu_core_count    = 2
+  memory_size       = 4
+}
+
+data "huaweicloud_images_image" "centos" {
+  name        = "CentOS 7.9 64bit"
+  most_recent = true
+}
+
+data "huaweicloud_vpc_subnet" "pablonet" {
+  name = "subnet-default"
+}
+
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "!@#$%*"
+}
+
+resource "huaweicloud_compute_instance" "basic" {
   name              = "basic"
-  image_name        = "Ubuntu 18.04 server 64bit"
-  flavor_name       = "s3.medium.2"
-  key_pair          = "KeyPair-TF"
-  security_groups   = [huaweicloud_networking_secgroup_v2.secgroup_1.name]
-  availability_zone = "${var.region}a"
+  admin_pass        = random_password.password.result
+  image_id          = data.huaweicloud_images_image.centos.id
+  flavor_id         = data.huaweicloud_compute_flavors.myflavor.ids[0]
+  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
+  security_groups   = ["default"]
 
   network {
-    name = huaweicloud_vpc_v1.vpc_v1.id
+    uuid = data.huaweicloud_vpc_subnet.pablonet.id
   }
-}
-
-# Variables
-variable "ak" {
-  type = string
-}
-
-variable "sk" {
-  type = string
-}
-
-variable "region" {
-  type = string
 }
