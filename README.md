@@ -7,7 +7,17 @@ Repositorio para los assignments de la primer semana.
 
 	1. Internet connection
 	2. git
-	
+	3. Go installed
+	4. Terraform
+	5. 
+
+## Instalar Terraform
+
+	1. curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+	2. sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+	3. sudo apt install terraform
 
 ## Tareas Realizadas
 

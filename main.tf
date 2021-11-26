@@ -47,7 +47,7 @@ resource "huaweicloud_vpc" "pgvpc" {
 }
 resource "huaweicloud_vpc_subnet" "pg-subnet" {
   name       = "pg-subnet"
-  cidr       = "192.168.0.0/16"
+  cidr       = "192.168.0.0/24"
   gateway_ip = "192.168.0.1"
   vpc_id     = huaweicloud_vpc.pgvpc.id
 }
@@ -65,8 +65,8 @@ resource "huaweicloud_networking_secgroup_rule" "secgroup_rule" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "tcp"
-  port_range_min    = 8080
-  port_range_max    = 8080
+  port_range_min    = 22
+  port_range_max    = 22
   remote_ip_prefix  = "0.0.0.0/0"
 }
 
@@ -89,10 +89,10 @@ resource "huaweicloud_evs_volume" "pg-vol" {
 
 resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
-  admin_pass        = random_password.password.result
+  admin_pass         = random_password.password.result
   image_id           = data.huaweicloud_images_image.myimage.id
   flavor_id          = data.huaweicloud_compute_flavors.myflavor.ids[0]
-  security_groups = ["pg-secgroup"]
+  security_groups    = ["pg-secgroup"]
   availability_zone  = data.huaweicloud_availability_zones.myaz.names[0]
 
   network {
@@ -114,6 +114,15 @@ resource "huaweicloud_nat_gateway" "pg-nat" {
   spec                = "1"
   router_id           = huaweicloud_vpc.pgvpc.id
   internal_network_id = huaweicloud_vpc_subnet.pg-subnet.id
+}
+
+resource "huaweicloud_nat_dnat_rule" "pg-dnat_1" {
+  nat_gateway_id        = huaweicloud_nat_gateway.pg-nat.id
+  floating_ip_id        = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  port_id               = huaweicloud_compute_instance.pg-ecs.network.0.port
+  protocol              = "tcp"
+  internal_service_port = 22
+  external_service_port = 22
 }
 
 # resource "huaweicloud_vpc_eip" "pg-eip" {
