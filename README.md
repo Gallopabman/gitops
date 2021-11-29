@@ -43,17 +43,22 @@ Terraform version (Check the installation)
 
 ## Comandos ejecutados
 
-	1. git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
-	2. git checkour terraform
-	3. git pull
-	4. terraform init
-	![ping](./screens/terraform-init.png)
-	5. terraform plan -var="ak={access_key}" -var="sk={secret_key}"
-	![ping](./screens/terraform-plan.png)
-	6. terraform apply -var="ak={access_key}" -var="sk={secret_key}"
-	![ping](./screens/terraform-apply.png)
-	7. terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
-	![ping](./screens/terraform-destroy.png)
+	git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
+	git checkout terraform
+	git pull
+	terraform init
+[screenshot1](./screens/terraform-init.png)
+	
+	terraform plan -var="ak={access_key}" -var="sk={secret_key}"
+[screenshot2](./screens/terraform-plan.png)
+	
+	terraform apply -var="ak={access_key}" -var="sk={secret_key}"
+[screenshot3](./screens/terraform-apply.png)
+	
+	terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
+[screenshot4](./screens/terraform-destroy.png)
+
+
 
 ## Inconvenientes encontrados
 
@@ -68,7 +73,7 @@ Terraform version (Check the installation)
 	3. Revisá la siguiente dirección http://localhost:8080
 	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
 	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
-	
+
 ## Datos de autenticación
 
 	El sistema viene con 4 cuentas pre-definidas:
