@@ -31,7 +31,7 @@ sudo apt install terraform
 Terraform version (Check the installation)
 
 ## Tareas Realizadas
-
+```
 	1. repo original https://gitlab.com/equipo-devops/bootcamps/semperti-bootcamp clonado y pusheado a https://gitlab.com/equipo-devops/bootcamps/sre-bootcamp-pablo-20211115	
 	2. Branch checkout terraform
 	3. Terraform instalado
@@ -40,25 +40,23 @@ Terraform version (Check the installation)
 	9. readme.md modificado 
 	10. cambios pusheados a la rama terraform
 	11. PR generada con cambios del segundo assignment a rama master
-
+```
 ## Comandos ejecutados
-
+```
 	git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
 	git checkout terraform
 	git pull
 	terraform init
-[screenshot1](./screens/terraform-init.png)
-	
+```
+![screenshot1](./screens/terraform-init.png)
+```
 	terraform plan -var="ak={access_key}" -var="sk={secret_key}"
 [screenshot2](./screens/terraform-plan.png)
-	
 	terraform apply -var="ak={access_key}" -var="sk={secret_key}"
-[screenshot3](./screens/terraform-apply.png)
-	
+[screenshot3](./screens/apply.png)
 	terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
 [screenshot4](./screens/terraform-destroy.png)
-
-
+```
 
 ## Inconvenientes encontrados
 
