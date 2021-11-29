@@ -7,46 +7,55 @@ Repositorio para los assignments de la primer semana.
 
 	1. Internet connection
 	2. git
-	3. Go installed
-	4. Terraform
-	5. 
+	3. Terraform
+	4. Huaweicloud access key & secret key available
+	5. Go
 
-## Instalar Terraform
+## instalar huawei cloud provider
+Clone repository to: $GOPATH/src/github.com/huaweicloud/terraform-provider-huaweicloud
 
-	1. curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+mkdir -p $GOPATH/src/github.com/huaweicloud; cd $GOPATH/src/github.com/huaweicloud
+git clone https://github.com/huaweicloud/terraform-provider-huaweicloud
+Enter the provider directory and build the provider
 
-	2. sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+cd $GOPATH/src/github.com/huaweicloud/terraform-provider-huaweicloud
+make build
 
-	3. sudo apt install terraform
+## Instalar Terraform (Ubuntu)
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+sudo apt install terraform
+
+Terraform version (Check the installation)
 
 ## Tareas Realizadas
 
 	1. repo original https://gitlab.com/equipo-devops/bootcamps/semperti-bootcamp clonado y pusheado a https://gitlab.com/equipo-devops/bootcamps/sre-bootcamp-pablo-20211115	
-	2. Branch general creada
-	3. readme.md modificado 
-	4. cambios pusheados a la rama general
-	5. PR generada con cambios del primer assignment a rama master
+	2. Branch checkout terraform
+	3. Terraform instalado
+	4. Descargar huaweicloud provider
+	5. Main.tf y Versions.tf creados
+	9. readme.md modificado 
+	10. cambios pusheados a la rama terraform
+	11. PR generada con cambios del segundo assignment a rama master
 
 ## Comandos ejecutados
 
-	1. apt install git - Para poder utilizar todos los comandos de git
-	2. git init - iniciar la carpeta de archivos con git
-	3. git remote add origin https://gitlab.com/equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git - asocia la carpeta con el repositorio de gitlab
-	4. git add . - para agregar los cambios a los archivos que debemos pushear
-	5. git commit -m "first commit" - para tagear el commit que sera pusheado
-	6. git config - para configurar nombre de usuario y password
-	7. git push --set-upstream origin master - para pushear todo a la rama master
-	8. git checkout -b general - crear la rama general y hacer checkout a la misma
-	9. git add .
-	10. git commit -m "assignment 0 completed"
-	11. git push - para pushear a la branch activa, en este caso general
-
-
-
+	1. git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
+	2. git checkour terraform
+	3. git pull
+	4. terraform init
+	5. terraform plan -var="ak={access_key}" -var="sk={secret_key}"
+	6. terraform apply -var="ak={access_key}" -var="sk={secret_key}"
+	7. terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
+	
 ## Inconvenientes encontrados
 
 	1. Algunos comandos varian ligeramente con los acostumbrados
 	2. Interfa de Gitlab resulta poco intuitiva de momento
+	3. Terraform EIP attachment & SG configuration
 
 ## Instrucciones para correr esta aplicación
 
