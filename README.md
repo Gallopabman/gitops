@@ -47,17 +47,13 @@ Terraform version (Check the installation)
 	2. git checkour terraform
 	3. git pull
 	4. terraform init
-	![ping](./screen/terraform-init.png)
+	![ping](./screens/terraform-init.png)
 	5. terraform plan -var="ak={access_key}" -var="sk={secret_key}"
-	![ping](./screen/terraform-plan.png)
+	![ping](./screens/terraform-plan.png)
 	6. terraform apply -var="ak={access_key}" -var="sk={secret_key}"
-	![ping](./screen/terraform-apply.png)
+	![ping](./screens/terraform-apply.png)
 	7. terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
-	![ping](./screen/terraform-destroy.png)
-
-## Imagenes comandos bien ejecutados
-
-    ![ping](./screen/terraform-apply.png)
+	![ping](./screens/terraform-destroy.png)
 
 ## Inconvenientes encontrados
 
