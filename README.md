@@ -42,21 +42,18 @@ Terraform version (Check the installation)
 	11. PR generada con cambios del segundo assignment a rama master
 ```
 ## Comandos ejecutados
-```
+
 	git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
 	git checkout terraform
 	git pull
 	terraform init
-```
-![screenshot1](./screens/terraform-init.png)
-```
+![screenshot1](./Screens/terraform-init.png)
 	terraform plan -var="ak={access_key}" -var="sk={secret_key}"
-[screenshot2](./screens/terraform-plan.png)
+![screenshot2](./Screens/terraform-plan.png)
 	terraform apply -var="ak={access_key}" -var="sk={secret_key}"
-[screenshot3](./screens/apply.png)
+![screenshot3](./Screens/apply.png)
 	terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
-[screenshot4](./screens/terraform-destroy.png)
-```
+![screenshot4](./Screens/terraform-destroy.png)
 
 ## Inconvenientes encontrados
 
