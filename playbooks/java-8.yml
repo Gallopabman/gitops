@@ -1,0 +1,7 @@
+---
+- name: Install Oracle Java
+  hosts: webservers
+  user: root
+  become: true
+  roles:
+    - oracle-java

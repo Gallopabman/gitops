@@ -10,6 +10,7 @@ Repositorio para los assignments de la primer semana.
 	3. Terraform
 	4. Huaweicloud access key & secret key available
 	5. Go
+	6. Ansible
 
 ## instalar huawei cloud provider
 Clone repository to: $GOPATH/src/github.com/huaweicloud/terraform-provider-huaweicloud
@@ -29,6 +30,10 @@ sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.rel
 sudo apt install terraform
 
 Terraform version (Check the installation)
+
+## Instalar Ansible
+
+![screenshot1](./Screens/ansible.png)
 
 ## Tareas Realizadas
 ```
