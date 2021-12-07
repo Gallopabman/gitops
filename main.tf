@@ -27,7 +27,7 @@ data "huaweicloud_availability_zones" "myaz" {}
 
 data "huaweicloud_compute_flavors" "pg-flavor" {
   availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
-  performance_type  = "normal"
+  performance_type  = "highmem"
   cpu_core_count    = 2
   memory_size       = 4
 }
