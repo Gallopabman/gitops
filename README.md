@@ -58,8 +58,10 @@ Terraform version (Check the installation)
 ## Inconvenientes encontrados
 
 	1. Algunos comandos varian ligeramente con los acostumbrados
-	2. Interfa de Gitlab resulta poco intuitiva de momento
+	2. Interfaz de Gitlab resulta poco intuitiva de momento
 	3. Terraform EIP attachment & SG configuration
+	4. Snat debe estar bien configurada y el subnet dns list debe ser introducido tambien
+	5. hay que comprobar que haya disponibilidad en el provider del flavor utilizado para crear la ECS
 
 ## Instrucciones para correr esta aplicación
 

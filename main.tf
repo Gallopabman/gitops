@@ -25,13 +25,14 @@ provider "huaweicloud" {
 
 data "huaweicloud_availability_zones" "myaz" {}
 
-data "huaweicloud_compute_flavors" "myflavor" {
-  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
-  performance_type  = "normal"
-  cpu_core_count    = 2
-  memory_size       = 4
-}
-
+#data "huaweicloud_compute_flavors" "pg-flavor" {
+#  project_id        = "0d471126ed00f5882fe5c000df6574a1"
+#  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
+#  performance_type  = "normal"
+#  cpu_core_count    = 2
+#  memory_size       = 4
+#}
+#
 data "huaweicloud_images_image" "myimage" {
   name        = "CentOS 7.9 64bit"
   most_recent = true
@@ -50,6 +51,7 @@ resource "huaweicloud_vpc_subnet" "pg-subnet" {
   cidr       = "192.168.0.0/24"
   gateway_ip = "192.168.0.1"
   vpc_id     = huaweicloud_vpc.pgvpc.id
+  dns_list   = ["100.125.1.250","8.8.8.8"]
 }
 
 ########################
@@ -69,6 +71,34 @@ resource "huaweicloud_networking_secgroup_rule" "secgroup_rule" {
   port_range_max    = 22
   remote_ip_prefix  = "0.0.0.0/0"
 }
+resource "huaweicloud_networking_secgroup_rule" "https" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 443
+  port_range_max    = 443
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
+resource "huaweicloud_networking_secgroup_rule" "http" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 80
+  port_range_max    = 80
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
+resource "huaweicloud_networking_secgroup_rule" "http1" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 8080
+  port_range_max    = 8080
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
+
 
 #########################
 ########## ECS ##########
@@ -91,7 +121,7 @@ resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
   admin_pass         = random_password.password.result
   image_id           = data.huaweicloud_images_image.myimage.id
-  flavor_id          = data.huaweicloud_compute_flavors.myflavor.ids[0]
+  flavor_id          = "s6.large.2"
   security_groups    = ["pg-secgroup"]
   availability_zone  = data.huaweicloud_availability_zones.myaz.names[0]
 
@@ -124,21 +154,32 @@ resource "huaweicloud_nat_dnat_rule" "pg-dnat_1" {
   internal_service_port = 22
   external_service_port = 22
 }
-
-# resource "huaweicloud_vpc_eip" "pg-eip" {
-#   publicip {
-#     type = "5_bgp"
-#   }
-#   bandwidth {
-#     name        = "pg-eip"
-#     size        = 8
-#     share_type  = "PER"
-#     charge_mode = "traffic"
-#   }
-# }
-
+resource "huaweicloud_nat_dnat_rule" "pg-dnat_2" {
+  nat_gateway_id        = huaweicloud_nat_gateway.pg-nat.id
+  floating_ip_id        = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  port_id               = huaweicloud_compute_instance.pg-ecs.network.0.port
+  protocol              = "tcp"
+  internal_service_port = 80 
+  external_service_port = 80
+}
+resource "huaweicloud_nat_dnat_rule" "pg-dnat_3" {
+  nat_gateway_id        = huaweicloud_nat_gateway.pg-nat.id
+  floating_ip_id        = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  port_id               = huaweicloud_compute_instance.pg-ecs.network.0.port
+  protocol              = "tcp"
+  internal_service_port = 8080 
+  external_service_port = 8080
+}
+resource "huaweicloud_nat_dnat_rule" "pg-dnat_4" {
+  nat_gateway_id        = huaweicloud_nat_gateway.pg-nat.id
+  floating_ip_id        = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  port_id               = huaweicloud_compute_instance.pg-ecs.network.0.port
+  protocol              = "tcp"
+  internal_service_port = 443 
+  external_service_port = 443
+}
 resource "huaweicloud_nat_snat_rule" "pg-snat" {
   nat_gateway_id = huaweicloud_nat_gateway.pg-nat.id
-  network_id     = huaweicloud_vpc_subnet.pg-subnet.id
   floating_ip_id = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  subnet_id      = huaweicloud_vpc_subnet.pg-subnet.id
 }
