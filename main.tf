@@ -25,13 +25,14 @@ provider "huaweicloud" {
 
 data "huaweicloud_availability_zones" "myaz" {}
 
-data "huaweicloud_compute_flavors" "pg-flavor" {
-  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
-  performance_type  = "highmem"
-  cpu_core_count    = 2
-  memory_size       = 4
-}
-
+#data "huaweicloud_compute_flavors" "pg-flavor" {
+#  project_id        = "0d471126ed00f5882fe5c000df6574a1"
+#  availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
+#  performance_type  = "normal"
+#  cpu_core_count    = 2
+#  memory_size       = 4
+#}
+#
 data "huaweicloud_images_image" "myimage" {
   name        = "CentOS 7.9 64bit"
   most_recent = true
@@ -50,6 +51,7 @@ resource "huaweicloud_vpc_subnet" "pg-subnet" {
   cidr       = "192.168.0.0/24"
   gateway_ip = "192.168.0.1"
   vpc_id     = huaweicloud_vpc.pgvpc.id
+  dns_list   = ["100.125.1.250","8.8.8.8"]
 }
 
 ########################
@@ -119,7 +121,7 @@ resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
   admin_pass         = random_password.password.result
   image_id           = data.huaweicloud_images_image.myimage.id
-  flavor_id          = data.huaweicloud_compute_flavors.pg-flavor.id
+  flavor_id          = "s6.small.1"
   security_groups    = ["pg-secgroup"]
   availability_zone  = data.huaweicloud_availability_zones.myaz.names[0]
 
@@ -175,4 +177,9 @@ resource "huaweicloud_nat_dnat_rule" "pg-dnat_4" {
   protocol              = "tcp"
   internal_service_port = 443 
   external_service_port = 443
+}
+resource "huaweicloud_nat_snat_rule" "pg-snat" {
+  nat_gateway_id = huaweicloud_nat_gateway.pg-nat.id
+  floating_ip_id = "3fceb686-7435-4c6a-8332-a4171ee0d398"
+  subnet_id      = huaweicloud_vpc_subnet.pg-subnet.id
 }
