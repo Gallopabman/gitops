@@ -1,0 +1,71 @@
+---
+- name: Tailscale
+  hosts: "webservers"
+  user: root
+  vars:
+    root_db_password: "aRopA*VKgWN$Tren"
+    yum_dependencies:
+      - yum-utils
+      - gnupg2
+    centos_family_distros:
+      - CentOS
+
+    yum_repos:
+      CentOS: https://pkgs.tailscale.com/stable/centos/7/tailscale.repo
+
+    tailscale_package: tailscale 
+    tailscale_service: tailscaled
+    tailscale_auth_key: tskey-kgzbEB2CNTRL-RnUhWAg3JmDabEUrsjxcoK
+    
+  tasks:
+
+    - name: CentOS | Yum Dependencies
+      become: true
+      yum:
+        name: "{{ yum_dependencies }}"
+        state: present
+
+    - name: CentOS | Add Yum Repo
+      become: true
+      command: yum-config-manager --add-repo https://pkgs.tailscale.com/stable/centos/7/tailscale.repo
+      args:
+        creates: /etc/yum.repos.d/tailscale.repo
+
+    - name: CentOS | Install Tailscale
+      become: true
+      yum:
+        name: "tailscale"
+        disable_gpg_check: true
+        state: latest
+
+    - name: Tailscale up
+      become: true
+      service:
+        name: "{{ tailscale_service }}"
+        state: started
+        enabled: true
+
+    - name: Check if Tailscale is connected
+      command: tailscale status & tailscale ip
+      changed_when: false
+      register: tailscale_status
+      failed_when:
+        - tailscale_status.rc != 0
+        - "'Logged out.' not in tailscale_status.stdout"
+
+    - name: Tailscale Status
+      debug:
+        var: tailscale_status
+      
+    - name: Tailscale IP
+      command: tailscale ip
+      changed_when: false
+      register: tailscale_ip
+
+    - name: Tailscale Up
+      become: true
+      command: tailscale up --authkey=tskey-kgzbEB2CNTRL-RnUhWAg3JmDabEUrsjxcoK {{ tailscale_args | default() }}
+      no_log: true
+      register: tailscale_start
+      async: 60
+      poll: 5 
