@@ -1,8 +1,0 @@
----
-- hosts: webservers
-  user: root
-  tasks:
-  - name: instalar java         
-    yum:
-      name: java-1.8.0-openjdk.x86_64
-      state: present

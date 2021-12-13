@@ -1,0 +1,12 @@
+---
+- name: Install MySQL database server
+  hosts: "all"
+  remote_user: root
+  tasks:
+#    - name: Download sources
+#      command: rpm -Uvh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+    
+    - name: install mysql
+      yum:
+        name: mysql-community-server
+        state: present
