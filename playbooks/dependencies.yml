@@ -1,0 +1,58 @@
+---
+- name: Instalar Java
+  hosts: "all"
+  remote_user: root
+  tasks:
+##### JAVA8 #####
+  - name: instalar java         
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+##### MAVEN #####
+  - name: instalar maven   
+    yum:
+      name: maven
+      state: present
+##### MySQL #####
+  - name: Download MySQL Community Repo
+    get_url:
+      url: http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
+      dest: /tmp
+    
+  - name: Install MySQL Community Repo
+    command: /usr/bin/rpm -ivh /tmp/mysql-community-release-el7-7.noarch.rpm
+
+  - name: install mysql-server
+    yum:
+      name: mysql-server
+      state: present
+   
+  - name: install mysql-python
+    yum:
+      name: MySQL-python
+      state: present
+    
+  - name: install mysql
+    yum:
+      name: mysql
+      state: present
+    
+  - name: Start MySQL
+    service: 
+      name: mysqld 
+      state: started
+    
+  - name: update mysql root password for all root accounts  
+    mysql_user:  
+      name: root  
+      host: "{{ item }}"  
+      password: "{{ mysql_root_password }}"  
+      login_user: root  
+      login_password: "{{ mysql_root_password }}"  
+      check_implicit_admin: yes  
+      priv: "*.*:ALL,GRANT"  
+    with_items:  
+      - "{{ ansible_hostname }}"  
+      - 127.0.0.1  
+      - ::1  
+      - localhost

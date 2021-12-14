@@ -2,12 +2,19 @@
 - name: Install MySQL database server
   hosts: "all"
   remote_user: root
+  vars:
+    mysql_root_password: mysqlpass 
+  
   tasks:
     - name: Download MySQL Community Repo
       get_url:
         url: http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
         dest: /tmp
     
+    - name: Install MySQL Community Repo
+      command: /usr/bin/rpm -ivh /tmp/mysql-community-release-el7-7.noarch.rpm
+
+
     - name: install mysql-server
       yum:
         name: mysql-server
@@ -28,19 +35,18 @@
         name: mysqld 
         state: started
 
-#    - name: Remove Test database if it exist.
-#      mysql_db: name=test state=absent
-    - name: grep
-      command: grep "A temporary password" /var/log/mysqld.log
-      
-    - name: Remove All Anonymous User Accounts
-      mysql_user: name=´´ host_all=yes state=absent
-
-
-    - name: Change root password
-      mysql_user: name=root host={{item}} password={{root_db_password}}
-      with_items:
-        - “{{ansible_hostname}}”
-        - 127.0.0.1
-        - ::1
+    
+    - name: update mysql root password for all root accounts  
+      mysql_user:  
+        name: root  
+        host: "{{ item }}"  
+        password: "{{ mysql_root_password }}"  
+        login_user: root  
+        login_password: "{{ mysql_root_password }}"  
+        check_implicit_admin: yes  
+        priv: "*.*:ALL,GRANT"  
+      with_items:  
+        - "{{ ansible_hostname }}"  
+        - 127.0.0.1  
+        - ::1  
         - localhost
