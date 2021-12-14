@@ -1,7 +1,9 @@
 ---
-- name: Instalar Java
+- name: Instalar requisitos
   hosts: "all"
   remote_user: root
+  vars:
+    mysql_root_password: mysqlpass 
   tasks:
 ##### JAVA8 #####
   - name: instalar java         
@@ -19,8 +21,8 @@
       url: http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
       dest: /tmp
     
-  - name: Install MySQL Community Repo
-    command: /usr/bin/rpm -ivh /tmp/mysql-community-release-el7-7.noarch.rpm
+#  - name: Install MySQL Community Repo
+#    command: /usr/bin/rpm -ivh /tmp/mysql-community-release-el7-7.noarch.rpm
 
   - name: install mysql-server
     yum:

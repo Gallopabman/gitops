@@ -62,12 +62,7 @@
 
     - name: Tailscale Status
       debug:
-        var: tailscale_status
-      
-    - name: Tailscale IP
-      command: tailscale ip -4
-      changed_when: false
-      register: tailscale_ip  
+        var: tailscale_status 
     
     - name: Tailscale Up
       become: true
@@ -75,4 +70,9 @@
       register: tailscale_start
       async: 60
       poll: 5 
+    
+    - name: Tailscale IP
+      command: tailscale ip -4
+      changed_when: false
+      register: tailscale_ip 
 
