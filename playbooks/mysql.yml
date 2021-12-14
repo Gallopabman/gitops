@@ -3,10 +3,44 @@
   hosts: "all"
   remote_user: root
   tasks:
-#    - name: Download sources
-#      command: rpm -Uvh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+    - name: Download MySQL Community Repo
+      get_url:
+        url: http://repo.mysql.com/mysql-community-release-el7-7.noarch.rpm
+        dest: /tmp
+    
+    - name: install mysql-server
+      yum:
+        name: mysql-server
+        state: present
+   
+    - name: install mysql-python
+      yum:
+        name: MySQL-python
+        state: present
     
     - name: install mysql
       yum:
-        name: mysql-community-server
+        name: mysql
         state: present
+    
+    - name: Start MySQL
+      service: 
+        name: mysqld 
+        state: started
+
+#    - name: Remove Test database if it exist.
+#      mysql_db: name=test state=absent
+    - name: grep
+      command: grep "A temporary password" /var/log/mysqld.log
+      
+    - name: Remove All Anonymous User Accounts
+      mysql_user: name=´´ host_all=yes state=absent
+
+
+    - name: Change root password
+      mysql_user: name=root host={{item}} password={{root_db_password}}
+      with_items:
+        - “{{ansible_hostname}}”
+        - 127.0.0.1
+        - ::1
+        - localhost

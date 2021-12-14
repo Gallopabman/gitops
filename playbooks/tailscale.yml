@@ -65,13 +65,14 @@
         var: tailscale_status
       
     - name: Tailscale IP
-      command: tailscale ip
+      command: tailscale ip -4
       changed_when: false
-      register: tailscale_ip
-
+      register: tailscale_ip  
+    
     - name: Tailscale Up
       become: true
       command: tailscale up --authkey={{ tailscale_auth_key }} {{ tailscale_args | default() }}
       register: tailscale_start
       async: 60
       poll: 5 
+

@@ -32,7 +32,7 @@ data "huaweicloud_availability_zones" "myaz" {}
 #  cpu_core_count    = 2
 #  memory_size       = 4
 #}
-#
+
 data "huaweicloud_images_image" "myimage" {
   name        = "CentOS 7.9 64bit"
   most_recent = true
@@ -71,44 +71,44 @@ resource "huaweicloud_networking_secgroup_rule" "secgroup_rule" {
   port_range_max    = 22
   remote_ip_prefix  = "0.0.0.0/0"
 }
-#resource "huaweicloud_networking_secgroup_rule" "https" {
-#  direction         = "ingress"
-#  ethertype         = "IPv4"
-#  protocol          = "tcp"
-#  port_range_min    = 443
-#  port_range_max    = 443
-#  remote_ip_prefix  = "0.0.0.0/0"
-#  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
-#}
-#resource "huaweicloud_networking_secgroup_rule" "http" {
-#  direction         = "ingress"
-#  ethertype         = "IPv4"
-#  protocol          = "tcp"
-#  port_range_min    = 80
-#  port_range_max    = 80
-#  remote_ip_prefix  = "0.0.0.0/0"
-#  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
-#}
-#resource "huaweicloud_networking_secgroup_rule" "http1" {
-#  direction         = "ingress"
-#  ethertype         = "IPv4"
-#  protocol          = "tcp"
-#  port_range_min    = 8080
-#  port_range_max    = 8080
-#  remote_ip_prefix  = "0.0.0.0/0"
-#  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
-#}
+resource "huaweicloud_networking_secgroup_rule" "https" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 443
+  port_range_max    = 443
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
+resource "huaweicloud_networking_secgroup_rule" "http" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 80
+  port_range_max    = 80
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
+resource "huaweicloud_networking_secgroup_rule" "http1" {
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  protocol          = "tcp"
+  port_range_min    = 8080
+  port_range_max    = 8080
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = huaweicloud_networking_secgroup.pg-secgroup.id
+}
 
 
 #########################
 ########## ECS ##########
 #########################
 
-resource "random_password" "password" {
-  length           = 16
-  special          = true
-  override_special = "!@#$%*"
-}
+#resource "random_password" "password" {
+#  length           = 16
+#  special          = true
+#  override_special = "!@#$%*"
+#}
 
 resource "huaweicloud_evs_volume" "pg-vol" {
   name              = "pg-volume"
@@ -119,7 +119,7 @@ resource "huaweicloud_evs_volume" "pg-vol" {
 
 resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
-  admin_pass         = random_password.password.result
+  admin_pass         = "Pgallo123"
   image_id           = data.huaweicloud_images_image.myimage.id
   flavor_id          = "s6.large.2"
   security_groups    = ["pg-secgroup"]
