@@ -1,5 +1,5 @@
-# Week 01 - Assignments
-Repositorio para los assignments de la primer semana.
+# Week 03 - ansible Assignments
+Repositorio para los assignments de ansible.
 
 # Java Application
 
@@ -11,6 +11,7 @@ Repositorio para los assignments de la primer semana.
 	4. Huaweicloud access key & secret key available
 	5. Go
 	6. Ansible
+	7. Logged into tailscale vpn https://tailscale.com/
 
 ## instalar huawei cloud provider
 Clone repository to: $GOPATH/src/github.com/huaweicloud/terraform-provider-huaweicloud
@@ -31,7 +32,7 @@ sudo apt install terraform
 
 Terraform version (Check the installation)
 
-## Instalar Ansible
+## Instalar Ansible (Ubuntu)
 
 ![screenshot1](./Screens/ansible.png)
 
@@ -42,10 +43,32 @@ Terraform version (Check the installation)
 	3. Terraform instalado
 	4. Descargar huaweicloud provider
 	5. Main.tf y Versions.tf creados
-	9. readme.md modificado 
-	10. cambios pusheados a la rama terraform
-	11. PR generada con cambios del segundo assignment a rama master
+	9. Ansible instalado 
+	10. playbooks creados en carpeta playbooks dentro del repo
+	11. inventory.yml y ansible.cfg creados para que el inventario personalizado sea usado por defecto
+	12. con ansible-vault encriptamos la password del root de la vm y lo pongo encriptado en el inventory
+	13. creado .sh para borrar security group rules, con el fin de que la vm se conecte solo por vpn
+	14. readme.MD modificado y repo pusheado para revision
 ```
+## Comandos ejecutados para ansible assignment
+
+	- git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
+	- git checkout ansible
+	- git pull
+	- cd playbooks
+	- ansible-vault encrypt_string "Pgallo123" > auth-key.txt
+![screenshot5](./Screens/vault.png) 
+	(la password de ansible-vault es pgall123)
+	- ansible-playbook tailscale.yml --ask-vault-pass
+![screenshot6](./Screens/tailscale.png)
+	- cd ..
+	- bash sg-delete.sh
+	- terraform apply -var="ak=LVAINUC7AJEEHXYFHSU7" -var="sk=Jm1S1sRVV4B6FXtTsgAlLBZ6c0SgVed46niy5RXm"
+![screenshot7](./Screens/sgs-destroyed.png)
+	- cd playbooks
+	- ansible-playbook dependencies.yml --ask-vault-pass
+![screenshot7](./Screens/dependencies.png)
+
 ## Comandos ejecutados
 
 	git@gitlab.com:equipo-devops/bootcamps/sre-bootcamp-pablo-20211115.git
@@ -59,6 +82,7 @@ Terraform version (Check the installation)
 ![screenshot3](./Screens/apply.png)
 	terraform destroy -var="ak={access_key}" -var="sk={secret_key}" (optional)
 ![screenshot4](./Screens/terraform-destroy.png)
+
 
 ## Inconvenientes encontrados
 
