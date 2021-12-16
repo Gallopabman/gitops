@@ -9,10 +9,15 @@ Repositorio para los assignments de la primer semana.
 	2. Maven 3.3+
 	3. MySQL 5.6+
 	4. Internet connection
+	5. Docker
 	
 	
 ## Instrucciones para correr esta aplicación
 
+	1. Levantar un contenedor de mysql y exponer el puerto 3306 con el siguiente comando
+	- docker run --name test2-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7
+	2. chequear que el contenedor este corriendo y expuesto el puerto 3306 con el comando "docker ps"
+!
 	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
 	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
 	3. Revisá la siguiente dirección http://localhost:8080
