@@ -17,12 +17,18 @@ Repositorio para los assignments de la primer semana.
 	1. Levantar un contenedor de mysql y exponer el puerto 3306 con el siguiente comando
 	- docker run --name test2-mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7
 	2. chequear que el contenedor este corriendo y expuesto el puerto 3306 con el comando "docker ps"
-!
-	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
-	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
-	3. Revisá la siguiente dirección http://localhost:8080
-	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
-	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
+![screenshot1](./screens/dockerps.png)
+
+	3. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties con el user y la pass de la db
+	4. Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. asi que deberias correr el comando "cp -r PDFs/* /<User_home>/upload/ Esto para que la aplicacion pueda encontrar los PDF previamente cargados
+	5. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
+	6. Revisá la siguiente dirección http://localhost:8080, deberias ver lo siguiente
+![screenshot2](./screens/inicio.png)
+
+	7. Una ves logeado usando las credenciales que se detallan mas abajo ya podras cargar journals o ver los cargados anteriormente
+![screenshot3](./screens/logeado.png)
+
+	
 	
 ## Datos de autenticación
 
