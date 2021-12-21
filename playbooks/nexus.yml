@@ -33,9 +33,9 @@
       command: cp -a {{nexus_extracted_dir}}/. {{nexus_dir}}
       when: nexus_download.changed
 
-    - name: remove {{nexus_extracted_dir}} directory
-      command: rm -rf {{nexus_extracted_dir}}
-      when: nexus_download.changed
+#    - name: remove {{nexus_extracted_dir}} directory
+#      command: rm -rf {{nexus_extracted_dir}}
+#      when: nexus_download.changed
 
     - name: make {{nexus_dir}} directory property of "nexus" user/group
       file: path={{nexus_dir}} group=nexus owner=nexus recurse=true
@@ -52,8 +52,8 @@
     - name: set nexus pidir
       lineinfile: dest={{nexus_dir}}/bin/nexus regexp="^#PIDDIR=" line="PIDDIR=/var/run/nexus" backrefs=true
 
-    - name: create symbolic links to /etc/init.d/nexus
-      file: src={{nexus_dir}}/bin/nexus dest=/etc/init.d/nexus state=link
+#    - name: create symbolic links to /etc/init.d/nexus
+#      file: src={{nexus_dir}}/bin/nexus dest=/etc/init.d/nexus state=link
 
     - name: set nexus working directory
       lineinfile: dest={{nexus_dir}}/conf/nexus.properties regexp="^nexus-work=" line="nexus-work=${bundleBasedir}/work/nexus"
