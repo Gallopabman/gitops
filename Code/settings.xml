@@ -1,10 +1,17 @@
-<server>
-    <id>nexus-releases</id>
-    <username>admin</username>
-    <password>admin123</password>
-</server>
-<server>
-    <id>nexus-snapshots</id>
-    <username>admin</username>
-    <password>admin123</password>
-</server>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>maven-releases</id>
+            <username>admin</username>
+            <password>5276344d-609e-40ae-82d6-2f22aacc82df</password>
+            <configuration></configuration>
+        </server>
+        <server>
+            <id>maven-snapshots</id>
+            <username>admin</username>
+            <password>5276344d-609e-40ae-82d6-2f22aacc82df</password>
+            <configuration></configuration>
+        </server>
+    </servers>
+</settings>
