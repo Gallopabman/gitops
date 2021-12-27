@@ -15,7 +15,9 @@ Repositorio para los assignments de la primer semana.
 ![screenshot1](./screens/networks.png)
 
 	
-	2. corremos un contenedor de docker MySQL attacheado a la red creada recientemente "docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306 --network bootcamp-net mysql:5.7". Con esto ya tenemos nuestra red de contenedores creada con una base de datos corriendo tal y como lo necesitamos. 
+	2. Corremos un contenedor de docker MySQL attacheado a la red creada recientemente:
+	``` docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306 --network bootcamp-net mysql:5.7"```
+Con esto ya tenemos nuestra red de contenedores creada con una base de datos corriendo tal y como lo necesitamos. 
 	
 	3. El siguiente paso es crear una Dockerfile para generar la imagen de nuestra aplicacion que sera desplegada posteriormente.
 ![screenshot2](./screens/dockerfile.png)
