@@ -4,13 +4,13 @@
         <server>
             <id>maven-releases</id>
             <username>admin</username>
-            <password>5276344d-609e-40ae-82d6-2f22aacc82df</password>
+            <password>Pgallo123</password>
             <configuration></configuration>
         </server>
         <server>
             <id>maven-snapshots</id>
             <username>admin</username>
-            <password>5276344d-609e-40ae-82d6-2f22aacc82df</password>
+            <password>Pgallo123</password>
             <configuration></configuration>
         </server>
     </servers>
