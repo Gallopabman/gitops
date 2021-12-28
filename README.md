@@ -1,34 +1,29 @@
-# Week 01 - Assignments
-Repositorio para los assignments de la primer semana.
+# Week 05 - Assignments
+Repositorio para los assignments de la quinta semana.
 
-# Java Application
+# Docker image store
 
 ## Prerequisites
 
-	1. Java 8
-	2. Maven 3.3+
-	3. MySQL 5.6+
-	4. Internet connection
+	1. docker
+	2. Internet connection
 	
 	
-## Instrucciones para correr esta aplicación
+## Instrucciones para subir una imagen a un repo de docker
 
-	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
-	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
-	3. Revisá la siguiente dirección http://localhost:8080
-	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
-	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
+	1. Ingresar a quay.io y logearse utilizando mis credenciales, una ves dentro voy a repositories, create new repository
+![screenshot1](./screens/quay.png)
+
+	2. Le damos al repositorio el nombre que nosotros queramos, en este caso journals, el nombre real del repo queda compuesto de la siguiente manera [user/repo] pablo_galleguillo/journals
+
+	3. Ahora vamos a tagear la imagen con el nombre del repo y colocamos tag al final, seria asi en este caso 'quay.io/pablo_galleguillo/journals:1.0.0'
+```
+docker tag journals-2.2 quay.io/pablo_galleguillo/journals:1.0.0
+```
+
+	4. pusheamos la imagen al repo
+![screenshot2](./screens/push.png)
+
+	5. Podemos contorlar que este subida correctamente en quay.io, en este caso subi dos, una sin tag y la otra con el tag "1"
+![screenshot3](./screens/repo.png)
 	
-## Datos de autenticación
-
-	El sistema viene con 4 cuentas pre-definidas:
-		1. publishers:
-			- username: publisher1 / password: publisher1
-			- username: publisher2 / password: publisher2
-		2. public users:
-			- username: user1 / password: user1
-			- username: user2 / password: user2
-            
-# Contact
-
-Cualquier duda o consulta, ubicanos en [Slack](https://semperti.slack.com).
