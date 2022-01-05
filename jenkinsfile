@@ -7,9 +7,7 @@ pipeline {
     stages {
         stage('test') {
             steps {
-                dir("/Code/") {
-                    sh "mvn clean test"
-                }
+                sh "mvn clean test --file Code/pom.xml"
             }
         }
         stage('test1') {
