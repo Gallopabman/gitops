@@ -1,23 +1,14 @@
 pipeline {
     environment {
-        BRANCH_NAME =  "${GIT_BRANCH.split("/")[1]}"
+        PATH = /Code/ 
     }
     agent any
 
     stages {
-        stage('build') {
+        stage('test') {
             steps {
-                echo "Building..${BRANCH_NAME}"  
-                updateGitlabCommitStatus name: 'build', state: 'pending'
-                script {
-                    try { 
-                        //sh ""
-                        updateGitlabCommitStatus name: 'build', state: 'success'      
-                    } catch (Exception e) {
-                        echo 'Exception occurred: ' + e.toString()
-                        updateGitlabCommitStatus name: 'build', state: 'failed'
-                        sh 'exit 1'
-                    }
+                dir("/Code/") {
+                    sh "mvn clean test"
                 }
             }
         }
