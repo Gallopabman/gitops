@@ -1,46 +1,43 @@
 pipeline {
-    environment {
-        PATH = /Code/ 
-    }
     agent any
+    
+    environment {
+    VERSION = "1.10-RELEASE"
 
-    stages {
-        stage('test') {
-            steps {
-                sh "mvn clean test --file Code/pom.xml"
-            }
-        }
-        stage('test1') {
-            steps {
-                echo "Testing..${BRANCH_NAME}"
-                updateGitlabCommitStatus name: 'test', state: 'pending'
-                script {
-                    try {
-                        //sh ""
-                        updateGitlabCommitStatus name: 'test', state: 'success'      
-                    } catch (Exception e) {
-                        echo 'Exception occurred: ' + e.toString()
-                        updateGitlabCommitStatus name: 'test', state: 'failed'
-                        sh 'exit 1'
-                    }
-                }
-            }
-        }
-        stage('deploy') {
-            steps {
-                echo "Deploying..${BRANCH_NAME}"
-                updateGitlabCommitStatus name: 'deploy', state: 'pending'
-                script {
-                    try {
-                        //sh ""
-                        updateGitlabCommitStatus name: 'deploy', state: 'success'      
-                    } catch (Exception e) {
-                        echo 'Exception occurred: ' + e.toString()
-                        updateGitlabCommitStatus name: 'deploy', state: 'failed'
-                        sh 'exit 1'
-                    }
-                }
-            }
-        }
     }
+    stages {
+
+        stage('clean / test') {
+            steps {
+                sh "mvn -B clean --file Code/pom.xml"
+                sh "mvn  test --file Code/pom.xml"
+            }
+        }
+        stage('Snapshot') {
+            steps {
+                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT --file Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests"  
+            }
+        }
+        stage('Release') {
+            steps {
+                sh "mvn versions:set -DnewVersion=$env.VERSION --file Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
+            }
+        }
+        stage('build image / run container / tag') {
+            steps { 
+                sh "sudo docker build --rm --no-cache -t semperti-bootcamp ."
+                sh "docker run --rm --net=host --name=semperti-bootcamp-app -d semperti-bootcamp"
+                sh "docker tag semperti-bootcamp docker.io/36541321/semperti-bootcamp"          
+            }           
+        }
+        stage('docker push') {
+            steps { 
+                
+                sh "docker push 36541321/semperti-bootcamp:latest" 
+                
+            }
+        }
+    }    
 }
