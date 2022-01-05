@@ -7,22 +7,21 @@ pipeline {
     }
     stages {
 
-        stage('clean / test') {
+        stage('Maven test') {
             steps {
-                sh "mvn -B clean --file Code/pom.xml"
-                sh "mvn  test --file Code/pom.xml"
+                sh "mvn clean test --file Code/pom.xml"
             }
         }
-        stage('Snapshot') {
+        stage('Maven release') {
             steps {
-                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT --file Code/pom.xml"
-                sh "mvn clean deploy -f Code/pom.xml -DskipTests"  
+                sh "mvn versions:set -DnewVersion=2.0"
+                sh "mvn clean deploy --settings Code/settings.xml"  
             }
         }
-        stage('Release') {
+        stage('Maven snapshot') {
             steps {
-                sh "mvn versions:set -DnewVersion=$env.VERSION --file Code/pom.xml"
-                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
+                sh "mvn versions:set -DnewVersion=2.1-SNAPSHOT"
+                sh "mvn clean deploy --settings Code/settings.xml" 
             }
         }
         stage('build image / run container / tag') {
