@@ -12,7 +12,7 @@ pipeline {
                 }
             }
         }
-        stage('test') {
+        stage('test1') {
             steps {
                 echo "Testing..${BRANCH_NAME}"
                 updateGitlabCommitStatus name: 'test', state: 'pending'
