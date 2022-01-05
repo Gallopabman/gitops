@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    VERSION = "1.10-RELEASE"
+    VERSION = "1.0"
 
     }
     stages {
@@ -14,29 +14,21 @@ pipeline {
         }
         stage('Maven release') {
             steps {
-                sh "mvn versions:set -DnewVersion=2.0 -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=$VERSION -f Code/pom.xml"
                 sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml"  
             }
         }
         stage('Maven snapshot') {
             steps {
-                sh "mvn versions:set -DnewVersion=2.1-SNAPSHOT -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=$VERSION-SNAPSHOT -f Code/pom.xml"
                 sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml" 
             }
         }
-        stage('build image / run container / tag') {
+        stage('Docker build and publish') {
             steps { 
                 sh "sudo docker build --rm --no-cache -t semperti-bootcamp ."
-                sh "docker run --rm --net=host --name=semperti-bootcamp-app -d semperti-bootcamp"
-                sh "docker tag semperti-bootcamp docker.io/36541321/semperti-bootcamp"          
+                sh "docker run --rm --net=host --name=semperti-bootcamp-app -d semperti-bootcamp"          
             }           
-        }
-        stage('docker push') {
-            steps { 
-                
-                sh "docker push 36541321/semperti-bootcamp:latest" 
-                
-            }
         }
     }    
 }
