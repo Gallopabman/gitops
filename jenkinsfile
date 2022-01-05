@@ -14,14 +14,14 @@ pipeline {
         }
         stage('Maven release') {
             steps {
-                sh "mvn versions:set -DnewVersion=2.0"
-                sh "mvn clean deploy --settings Code/settings.xml"  
+                sh "mvn versions:set -DnewVersion=2.0 -f Code/pom.xml"
+                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml"  
             }
         }
         stage('Maven snapshot') {
             steps {
-                sh "mvn versions:set -DnewVersion=2.1-SNAPSHOT"
-                sh "mvn clean deploy --settings Code/settings.xml" 
+                sh "mvn versions:set -DnewVersion=2.1-SNAPSHOT -f Code/pom.xml"
+                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml" 
             }
         }
         stage('build image / run container / tag') {
