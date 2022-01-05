@@ -1,0 +1,57 @@
+pipeline {
+    environment {
+        BRANCH_NAME =  "${GIT_BRANCH.split("/")[1]}"
+    }
+    agent any
+
+    stages {
+        stage('build') {
+            steps {
+                echo "Building..${BRANCH_NAME}"  
+                updateGitlabCommitStatus name: 'build', state: 'pending'
+                script {
+                    try { 
+                        //sh ""
+                        updateGitlabCommitStatus name: 'build', state: 'success'      
+                    } catch (Exception e) {
+                        echo 'Exception occurred: ' + e.toString()
+                        updateGitlabCommitStatus name: 'build', state: 'failed'
+                        sh 'exit 1'
+                    }
+                }
+            }
+        }
+        stage('test') {
+            steps {
+                echo "Testing..${BRANCH_NAME}"
+                updateGitlabCommitStatus name: 'test', state: 'pending'
+                script {
+                    try {
+                        //sh ""
+                        updateGitlabCommitStatus name: 'test', state: 'success'      
+                    } catch (Exception e) {
+                        echo 'Exception occurred: ' + e.toString()
+                        updateGitlabCommitStatus name: 'test', state: 'failed'
+                        sh 'exit 1'
+                    }
+                }
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo "Deploying..${BRANCH_NAME}"
+                updateGitlabCommitStatus name: 'deploy', state: 'pending'
+                script {
+                    try {
+                        //sh ""
+                        updateGitlabCommitStatus name: 'deploy', state: 'success'      
+                    } catch (Exception e) {
+                        echo 'Exception occurred: ' + e.toString()
+                        updateGitlabCommitStatus name: 'deploy', state: 'failed'
+                        sh 'exit 1'
+                    }
+                }
+            }
+        }
+    }
+}
