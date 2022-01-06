@@ -104,12 +104,6 @@ resource "huaweicloud_networking_secgroup_rule" "http1" {
 ########## ECS ##########
 #########################
 
-resource "random_password" "password" {
-  length           = 16
-  special          = true
-  override_special = "!@#$%*"
-}
-
 resource "huaweicloud_evs_volume" "pg-vol" {
   name              = "pg-volume"
   availability_zone = data.huaweicloud_availability_zones.myaz.names[0]
@@ -119,7 +113,7 @@ resource "huaweicloud_evs_volume" "pg-vol" {
 
 resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
-  admin_pass         = random_password.password.result
+  admin_pass         = "Pgallo123"
   image_id           = data.huaweicloud_images_image.myimage.id
   flavor_id          = "s6.xlarge.2"
   security_groups    = ["pg-secgroup"]
