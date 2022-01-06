@@ -121,7 +121,7 @@ resource "huaweicloud_compute_instance" "pg-ecs" {
   name               = "pg-ecs"
   admin_pass         = random_password.password.result
   image_id           = data.huaweicloud_images_image.myimage.id
-  flavor_id          = "s6.large.2"
+  flavor_id          = "s6.xlarge.2"
   security_groups    = ["pg-secgroup"]
   availability_zone  = data.huaweicloud_availability_zones.myaz.names[0]
 
