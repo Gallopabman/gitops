@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    VERSION = "1.0"
+    VERSION = "1.0.1"
 
     }
     stages {
@@ -26,8 +26,10 @@ pipeline {
         }
         stage('Docker build and publish') {
             steps { 
-                sh "sudo docker build --rm --no-cache -t semperti-bootcamp ."
-                sh "docker run --rm --net=host --name=semperti-bootcamp-app -d semperti-bootcamp"          
+                withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
+                    sh "docker login -u pablo_galleguillo -p ${SECRET}"
+                    sh "docker build -t quay.io/pablo_galleguillo/journals:$VERSION ."
+                    sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"          
             }           
         }
     }    
