@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    VERSION = "1.0.2"
+    VERSION = "1.0.3"
 
     }
     stages {
@@ -33,7 +33,7 @@ pipeline {
         stage('Docker build and publish') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
-                    sh "docker login -u pablo_galleguillo -p ${SECRET}"
+                    sh "docker login -u pablo.galleguillo@semperti.com -p ${SECRET}"
                     sh "docker build -t quay.io/pablo_galleguillo/journals:$VERSION ."
                     sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"   
                 }       
