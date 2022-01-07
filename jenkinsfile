@@ -2,11 +2,17 @@ pipeline {
     agent any
     
     environment {
-    VERSION = "1.0.1"
+    VERSION = "1.0.2"
 
     }
     stages {
-
+        stage('gitlab') {
+          steps {
+             echo 'Notify GitLab'
+             updateGitlabCommitStatus name: 'build', state: 'pending'
+             updateGitlabCommitStatus name: 'build', state: 'success'
+            }
+        }
         stage('Maven test') {
             steps {
                 sh "mvn clean test --file Code/pom.xml"
