@@ -5,8 +5,8 @@ WORKDIR /usr/local/lib
 RUN apk add --update curl && \
     rm -rf /var/cache/apk/*
 
-RUN curl -u admin:Pgallo123 -o journals.jar "http://100.109.4.7:8081/repository/maven-snapshots/com/semperti/trial/journals/2.2-SNAPSHOT/journals-2.2-20211227.124509-2.jar" -L
+COPY /home/local-node/workspace/bc-pgalleguillo/journals-ci/Code/target/journals-*-SNAPSHOT.jar /usr/local/lib/journals.jar
 
-EXPOSE 8080
+EXPOSE 8083
 
 ENTRYPOINT ["java","-jar","/usr/local/lib/journals.jar"]
