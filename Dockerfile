@@ -1,5 +1,7 @@
 FROM openjdk:8-jdk-alpine
 
+ARG VERSION
+
 WORKDIR /usr/local/lib
 
 RUN apk add --update curl && \
