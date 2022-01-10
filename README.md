@@ -23,6 +23,9 @@ docker tag journals-2.2 quay.io/pablo_galleguillo/journals:1.0.0
 
 	4. pusheamos la imagen al repo
 ![screenshot2](./screens/push.png)
+```
+docker push quay.io/pablo_galleguillo/journals:1
+```
 
 	5. Podemos contorlar que este subida correctamente en quay.io, en este caso subi dos, una sin tag y la otra con el tag "1"
 ![screenshot3](./screens/repo.png)
