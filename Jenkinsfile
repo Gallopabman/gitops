@@ -3,7 +3,7 @@ pipeline {
 
     }
     stages {
-        stage('Docker build and publish') {
+        stage('docker run') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
@@ -11,7 +11,7 @@ pipeline {
                 }       
             }           
         }
-         stage('Maven snapshot') {
+        stage('curl') {
             steps {
                 sh "curl http://100.109.4.7:8083"
         }
