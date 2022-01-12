@@ -14,7 +14,6 @@ pipeline {
          stage('Maven snapshot') {
             steps {
                 sh "curl http://100.109.4.7:8083"
-            }
         }
-    }    
-}
+    }
+}    
