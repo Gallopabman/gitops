@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    
+    environment {
+    VERSION = "${BUILD_NUMBER}"
 
     }
     stages {
@@ -15,5 +18,5 @@ pipeline {
             steps {
                 sh "curl http://100.109.4.7:8083"
         }
-    }
-}    
+    }    
+}
