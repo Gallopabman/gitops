@@ -10,7 +10,7 @@ pipeline {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
-                    sh "docker run -d --name app-journals -d quay.io/pablo_galleguillo/journals:latest"
+                    sh "docker run -d --name app-journals --net=host -p 8083:8080 quay.io/pablo_galleguillo/journals:latest"
                 }       
             }           
         }
