@@ -27,7 +27,7 @@ pipeline {
         stage('Maven release') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION -f Code/pom.xml"
-                sh "mvn deploy -DartifactId=journals-$VERSION.jar --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                sh "mvn deploy -DartifactId=journals-1.0.jar --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
             }
         }
         stage('Docker build and publish') {
