@@ -21,7 +21,7 @@ pipeline {
         stage('Maven snapshot') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION-SNAPSHOT -f Code/pom.xml"
-                sh "mvn clean deploy  -DartifactId=journals-$VERSION-SNAPSHOT.jar --settings Code/settings.xml -f Code/pom.xml" 
+                sh "mvn clean deploy -DartifactId=journals-$VERSION-SNAPSHOT.jar --settings Code/settings.xml -f Code/pom.xml" 
             }
         }
         stage('Maven release') {
