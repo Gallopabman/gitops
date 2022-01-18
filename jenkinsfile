@@ -21,13 +21,13 @@ pipeline {
         stage('Maven snapshot') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION-SNAPSHOT -f Code/pom.xml"
-                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml" 
+                sh "mvn clean deploy  -DartifactId=journals-$VERSION-SNAPSHOT.jar --settings Code/settings.xml -f Code/pom.xml" 
             }
         }
         stage('Maven release') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION -f Code/pom.xml"
-                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml"  
+                sh "mvn clean deploy -DartifactId=journals-$VERSION.jar --settings Code/settings.xml -f Code/pom.xml"  
             }
         }
         stage('Docker build and publish') {
