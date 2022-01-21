@@ -13,14 +13,9 @@ pipeline {
              updateGitlabCommitStatus name: 'build', state: 'success'
             }
         }
-        stage('mysql') {
-            steps {
-                sh "docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7"
-            }
-        }
         stage('Maven test') {
             steps {
-                sh "mvn clean test --file Code/pom.xml"
+                sh "mvn clean test --file Code/pom.xml -DskipTests" 
             }
         }
         stage('Maven snapshot') {
