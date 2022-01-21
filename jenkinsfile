@@ -18,16 +18,21 @@ pipeline {
                 sh "mvn clean test --file Code/pom.xml"
             }
         }
+        stage('mysql') {
+            steps {
+                sh "docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7"
+            }
+        }
         stage('Maven snapshot') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION-SNAPSHOT -f Code/pom.xml"
-                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml -DskipTest" 
+                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml -DskipTests" 
             }
         }
         stage('Maven release') {
             steps {
                 sh "mvn versions:set -DnewVersion=$VERSION -f Code/pom.xml"
-                sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTest"  
+                sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
             }
         }
         stage('Docker build and publish') {
