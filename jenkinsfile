@@ -20,12 +20,12 @@ pipeline {
         }
         stage('Maven snapshot') {
             steps {
-                sh "mvn clean deploy -DnewVersion=$VERSION-SNAPSHOT --settings Code/settings.xml -f Code/pom.xml" 
+                sh "mvn clean deploy -DnewVersion=$VERSION-SNAPSHOT --settings Code/settings.xml -f Code/pom.xml -DskipTest" 
             }
         }
         stage('Maven release') {
             steps {
-                sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml"  
+                sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTest"  
             }
         }
         stage('Docker build and publish') {
