@@ -19,10 +19,5 @@ pipeline {
                 }       
             }           
         }
-        stage('curl') {
-            steps {
-                sh "curl http://localhost:8083"
-            }
-        }
     }    
 }
