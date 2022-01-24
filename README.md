@@ -5,19 +5,16 @@ Repositorio para los assignments de la primer semana.
 
 ## Prerequisites
 
-	1. Java 8
-	2. Maven 3.3+
-	3. MySQL 5.6+
-	4. Internet connection
-	
-	
+	1. docker
+	2. Crear una red de docker en el host con el nombre bootcamp
+```
+docker network create bootcamp
+```
 ## Instrucciones para correr esta aplicación
 
-	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
-	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
-	3. Revisá la siguiente dirección http://localhost:8080
-	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
-	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
+	1. Creamos la Jenkinsfile correspondiente para que cree una base de datos mysql en el host attacheada a la red de docker creada anteriormente
+	2. Ahora levantamos un contenedor de la aplicación journals en la misma red que la bd del punto anterior para que pueda conectarse 
+	3. En este punt orealizamos un curl para verificar el estado de la app 
 
 curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
