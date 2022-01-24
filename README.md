@@ -15,6 +15,7 @@ docker network create bootcamp
 	1. Creamos la Jenkinsfile correspondiente para que cree una base de datos mysql en el host attacheada a la red de docker creada anteriormente
 	2. Ahora levantamos un contenedor de la aplicación journals en la misma red que la bd del punto anterior para que pueda conectarse.
 ![screenshot1](./screens/jenkins.png)
+	
 	3. Podemos verificar que la app se encuentra funcionando en la siguiente ruta http://100.109.4.7:8083/
 ![screenshot12](./screens/journals.png)
 
