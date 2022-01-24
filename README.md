@@ -13,8 +13,10 @@ docker network create bootcamp
 ## Instrucciones para correr esta aplicación
 
 	1. Creamos la Jenkinsfile correspondiente para que cree una base de datos mysql en el host attacheada a la red de docker creada anteriormente
-	2. Ahora levantamos un contenedor de la aplicación journals en la misma red que la bd del punto anterior para que pueda conectarse 
-	3. En este punt orealizamos un curl para verificar el estado de la app 
+	2. Ahora levantamos un contenedor de la aplicación journals en la misma red que la bd del punto anterior para que pueda conectarse.
+![screenshot1](./screens/quay.png)
+
+	3. Podemos verificar que la app se encuentra funcionando en la siguiente ruta http://100.109.4.7:8083/
 
 curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo
 sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
