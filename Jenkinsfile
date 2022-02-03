@@ -30,7 +30,7 @@ pipeline {
                 script{
                     manifest = readYaml file: 'manifest.yaml'
                     sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
-                    sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                    sh "mvn deploy -DnewVersion=${manifest.environment.production.version} --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
                 }
             }
         }
