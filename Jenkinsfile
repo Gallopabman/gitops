@@ -1,7 +1,8 @@
-def manifest
 
 pipeline {
     agent any
+
+def manifest
 
     stages {
         stage('gitlab') {
@@ -10,6 +11,15 @@ pipeline {
              updateGitlabCommitStatus name: 'build', state: 'pending'
              updateGitlabCommitStatus name: 'build', state: 'success'
             }
+        }
+        stage('docker cleaning'){
+            steps {
+                sh "docker stop $(docker ps -a)"
+                sh "docker rm $(docker ps -aq)"
+                sh "docker image prune -a -f"
+                sh "docker container prune -f"
+                } 
+            }      
         }
         stage('Maven test') {
             steps {
