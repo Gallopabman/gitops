@@ -3,7 +3,6 @@ def manifest
 pipeline {
     agent any
 
-    }
     stages {
         stage('gitlab') {
           steps {
@@ -58,4 +57,4 @@ pipeline {
             }
         }
     }      
-           
+}    
