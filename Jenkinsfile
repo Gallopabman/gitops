@@ -19,16 +19,20 @@ pipeline {
         }
         stage('Maven snapshot') {
             steps {
-                manifest = readYaml file: 'manifest.yaml'
-                sh "mvn versions:set -DnewVersion=${manifest.environment.staging.version}-SNAPSHOT -f Code/pom.xml"
-                sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml -DskipTests" 
+                script{
+                    manifest = readYaml file: 'manifest.yaml'
+                    sh "mvn versions:set -DnewVersion=${manifest.environment.staging.version}-SNAPSHOT -f Code/pom.xml"
+                    sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml -DskipTests" 
+                }
             }
         }
         stage('Maven release') {
             steps {
-                manifest = readYaml file: 'manifest.yaml'
-                sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
-                sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                script{
+                    manifest = readYaml file: 'manifest.yaml'
+                    sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
+                    sh "mvn deploy -DnewVersion=$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                }
             }
         }
         stage('Docker build and publish') {
@@ -50,9 +54,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
                     sh "docker run -h journals -d --net=bootcamp -p 8083:8080 quay.io/pablo_galleguillo/journals:latest"
-                    }
-                }
             }
-        }       
-    }           
-}
+        }
+    }
+}       
+           
