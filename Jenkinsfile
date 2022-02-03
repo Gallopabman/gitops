@@ -54,6 +54,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
                     sh "docker run -h journals -d --net=bootcamp -p 8083:8080 quay.io/pablo_galleguillo/journals:latest"
+                }
             }
         }
     }
