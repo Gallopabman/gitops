@@ -41,6 +41,7 @@ pipeline {
         stage('Docker build and publish') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
+                    sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
                     sh "docker build --build-arg VERSION=$VERSION -t quay.io/pablo_galleguillo/journals:$VERSION ."
                     sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"   
