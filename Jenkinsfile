@@ -14,13 +14,16 @@ def manifest
         }
         stage('docker cleaning'){
             steps {
-                sh "docker stop $(docker ps -a)"
-                sh "docker rm $(docker ps -aq)"
-                sh "docker image prune -a -f"
-                sh "docker container prune -f"
-                } 
-            }      
-        }
+             sh '''#!/bin/bash
+       //stop old conatiner
+       docker stop $(docker ps -q)
+       //delete inused images
+       docker images
+       docker image prune -a -f
+       docker container prune -f
+            '''
+            } 
+        }      
         stage('Maven test') {
             steps {
                 sh "mvn clean test --file Code/pom.xml -DskipTests" 
