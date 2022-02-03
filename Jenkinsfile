@@ -3,6 +3,10 @@ def manifest
 pipeline {
     agent any
 
+    environment {
+    VERSION = "${BUILD_NUMBER}"
+    }
+
     stages {
         stage('gitlab') {
           steps {
