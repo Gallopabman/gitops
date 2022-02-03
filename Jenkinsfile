@@ -1,7 +1,7 @@
+def manifest
+
 pipeline {
     agent any
-
-    def manifest
 
     }
     stages {
