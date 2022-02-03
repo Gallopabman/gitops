@@ -13,8 +13,8 @@ pipeline {
         }
         stage('docker cleaning'){
             steps {
-                sh docker stop \$\(docker ps -a\)
-                sh docker RM \$\(docker ps -aq\)
+                sh "docker stop \$\(docker ps -a\)"
+                sh "docker RM \$\(docker ps -aq\)"
             } 
         }      
         stage('Maven test') {
