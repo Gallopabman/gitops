@@ -11,12 +11,6 @@ pipeline {
              updateGitlabCommitStatus name: 'build', state: 'success'
             }
         }
-        stage('docker cleaning'){
-            steps {
-                sh "docker stop \$(docker ps -a)"
-                sh "docker rm \$(docker ps -aq)"
-            } 
-        }      
         stage('Maven test') {
             steps {
                 sh "mvn clean test --file Code/pom.xml -DskipTests" 
