@@ -1,7 +1,7 @@
 def manifest
 
 pipeline {
-    agent any
+    agent { node { label 'local' } }
 
     environment {
     VERSION = "${BUILD_NUMBER}"
