@@ -13,14 +13,8 @@ pipeline {
         }
         stage('docker cleaning'){
             steps {
-             sh '''#!/bin/bash
-       //stop old conatiner
-       docker stop $(docker ps -q)
-       //delete inused images
-       docker images
-       docker image prune -a -f
-       docker container prune -f
-            '''
+                sh docker stop \$\(docker ps -a\)
+                sh docker RM \$\(docker ps -aq\)
             } 
         }      
         stage('Maven test') {
