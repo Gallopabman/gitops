@@ -9,6 +9,19 @@ Repositorio para los assignments de la primer semana.
 	2. Maven 3.3+
 	3. MySQL 5.6+
 	4. Internet connection
+	5. Jenkins
+	6. Git
+	7. Red de docker con el nombre bootcamp
+
+## GITOPS
+
+	1. Lo primero que debemos hacer para utilizar un manifiesto de gitops es importar los archivos necesarios, el Dockerfile, el pom.xml, el settings.xml y el application.properties que contienen los cambios necesarios para que la aplicación corra sin fallos en nuestros ambientes.
+	2. como punto siguiente creamos un Jenkinsfile que contenga todos los pasos realizados en las etapad de CI/CD y lo modificamos para que adquiera las variables como por ejemplo la version desde el archivo manifest que vamos a crear.
+	3. Ahora tenemos que crear un .yaml con el nombre que deseemos, en este caso utilice manifest.yaml, en el archivo manifest podemos listar todas las variables que necesitemos como los ambientes, versiones, urls, etc..
+	4. Ahora debemos ir a jenkins y crear nuestro job de gitops al igual que lo hicimos en los pasos de CI/CD, para que se revise el repo y la rama cada 5 minutos y se genere el build del job si hay algun cambio.
+	5. Una ves tengamos todo lo necesario pusheamos el repo y esperamos que jenkins realice el job de manera automatica, si todos los pasos fueron satisfactorios veremos lo siguiente en jenkins.
+![screenshot12](./screens/job.png)
+
 	
 	
 ## Instrucciones para correr esta aplicación
