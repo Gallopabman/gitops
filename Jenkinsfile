@@ -5,6 +5,7 @@ pipeline {
 
     environment {
     VERSION = "${BUILD_NUMBER}"
+    DEPLOY_PROD = "${manifest.environment.production.deploy}"
     }
 
     stages {
@@ -70,7 +71,7 @@ pipeline {
         }
         stage('Maven release') {
             when {
-                        ${manifest.environment.production.deploy} 'true'
+                environment name: 'DEPLOY_PROD', value: 'true'
             }
             steps {
                 script{
