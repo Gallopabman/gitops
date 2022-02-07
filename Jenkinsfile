@@ -69,7 +69,6 @@ pipeline {
             }
         }
         stage('Maven release') {
-            manifest = readYaml file: 'manifest.yaml'
             when {
                         ${manifest.environment.production.deploy} 'true'
             }
