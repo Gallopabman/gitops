@@ -4,7 +4,8 @@ pipeline {
     agent { node { label 'local' } }
 
     environment {
-    VERSION = "${BUILD_NUMBER}"
+    VERSION = "${manifest.environment.staging.version}.${BUILD_NUMBER}"
+    PROD_VERSION = "${manifest.environment.production.version}.${BUILD_NUMBER}"
     }
 
     stages {
@@ -35,7 +36,7 @@ pipeline {
                     sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
                     sh "docker build --build-arg VERSION=$VERSION -f docker-snapshot -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
-                    sh "docker push quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT"   
+                    sh "docker push quay.io/pablo_galleguillo/journals:$VERSION-SNAPSHOT"   
                 }       
             }           
         }
@@ -82,8 +83,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
-                    sh "docker build --build-arg VERSION=$VERSION -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
-                    sh "docker push quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION"   
+                    sh "docker build --build-arg VERSION=$PROD_VERSION -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
+                    sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"   
                 }       
             }           
         }
