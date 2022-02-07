@@ -5,7 +5,6 @@ pipeline {
 
     environment {
     VERSION = "${BUILD_NUMBER}"
-    DEPLOY_PROD = "${manifest.environment.production.deploy}"
     }
 
     stages {
@@ -72,12 +71,38 @@ pipeline {
         stage('Maven release') {
             steps {
                 script{
-                    manifest = readYaml file: 'manifest.yaml'
-                    if ${manifest.environment.production.version}=true {                 
+                    manifest = readYaml file: 'manifest.yaml'                 
                     sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
-                    sh "mvn deploy -DnewVersion=${manifest.environment.production.version} --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
-                    }
+                    sh "mvn deploy -DnewVersion=${manifest.environment.production.version}.$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
                 }
+            }
+        }
+        stage('Docker build and publish') {
+            steps { 
+                withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
+                    sh "docker images"
+                    sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
+                    sh "docker build --build-arg VERSION=$VERSION -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
+                    sh "docker push quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION"   
+                }       
+            }           
+        }
+        stage('mysql-db') {
+            steps {
+                sh "docker run --name mysql -h mysql --net=bootcamp -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7"
+            }
+        }
+        stage('journals-app') {
+            steps { 
+                withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
+                    sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
+                    sh "docker run -h journals -d --net=bootcamp -p 8083:8080 quay.io/pablo_galleguillo/journals:latest"
+                }
+            }
+        }
+        stage('url test') {
+            steps {
+                sh "curl http://100.109.4.7:8083/"
             }
         }      
     }      
