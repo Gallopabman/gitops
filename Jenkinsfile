@@ -77,7 +77,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker build and publish') {
+        stage('Docker prod build and publish') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker images"
@@ -87,12 +87,12 @@ pipeline {
                 }       
             }           
         }
-        stage('mysql-db') {
+        stage('mysql-db prod') {
             steps {
                 sh "docker run --name mysql -h mysql --net=bootcamp -e MYSQL_ROOT_PASSWORD=mysqlpass -d -p 3306:3306  mysql:5.7"
             }
         }
-        stage('journals-app') {
+        stage('journals-app prod') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
@@ -100,7 +100,7 @@ pipeline {
                 }
             }
         }
-        stage('url test') {
+        stage('url prof test') {
             steps {
                 sh "curl http://100.109.4.7:8083/"
             }
