@@ -52,10 +52,11 @@ pipeline {
                 }
             }
         }
-        stage('url test')
+        stage('url test') {
             steps {
                 sh "curl http://100.109.4.7:8083/"
             }
+        }
         stage('docker prune'){
             steps {
                 script {
