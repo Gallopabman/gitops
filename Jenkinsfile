@@ -70,17 +70,15 @@ pipeline {
             }
         }
         stage('Maven release') {
-            when {
-                environment name: 'DEPLOY_PROD', value: 'true'
-            }
             steps {
                 script{
-                    manifest = readYaml file: 'manifest.yaml'                 
+                    manifest = readYaml file: 'manifest.yaml'
+                    if ${manifest.environment.production.version}=true {                 
                     sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
                     sh "mvn deploy -DnewVersion=${manifest.environment.production.version} --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                    }
                 }
             }
-        }
-        
+        }      
     }      
 }    
