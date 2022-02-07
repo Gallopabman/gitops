@@ -1,8 +1,9 @@
 ---
 environment:
   staging:
-    version: "$BUILD_NUMBER"
+    version: "1.0"
     url: http://100.109.4.7:8083/
   production:
-    version: "$BUILD_NUMBER"
+    version: "1.0"
     url: http://100.109.4.7:8083/
+    deploy: "true"

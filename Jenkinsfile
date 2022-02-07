@@ -15,17 +15,6 @@ pipeline {
              updateGitlabCommitStatus name: 'build', state: 'success'
             }
         }
-        stage('docker prune'){
-            steps {
-                script {
-                    def doc_containers = sh(returnStdout: true, script: 'docker container ps -aq').replaceAll("\n", " ") 
-                    if (doc_containers) {
-                    sh "docker stop ${doc_containers}"
-                    sh "docker rm ${doc_containers}"
-                    }
-                }
-            }
-        }
         stage('Maven test') {
             steps {
                 sh "mvn clean test --file Code/pom.xml -DskipTests" 
@@ -35,27 +24,19 @@ pipeline {
             steps {
                 script{
                     manifest = readYaml file: 'manifest.yaml'
-                    sh "mvn versions:set -DnewVersion=${manifest.environment.staging.version}-SNAPSHOT -f Code/pom.xml"
+                    sh "mvn versions:set -DnewVersion=${manifest.environment.staging.version}.$VERSION-SNAPSHOT -f Code/pom.xml"
                     sh "mvn clean deploy --settings Code/settings.xml -f Code/pom.xml -DskipTests" 
-                }
-            }
-        }
-        stage('Maven release') {
-            steps {
-                script{
-                    manifest = readYaml file: 'manifest.yaml'
-                    sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
-                    sh "mvn deploy -DnewVersion=${manifest.environment.production.version} --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
                 }
             }
         }
         stage('Docker build and publish') {
             steps { 
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
+                    manifest = readYaml file: 'manifest.yaml'
                     sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
-                    sh "docker build --build-arg VERSION=$VERSION -t quay.io/pablo_galleguillo/journals:$VERSION ."
-                    sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"   
+                    sh "docker build --build-arg VERSION=$VERSION -f docker-snapshot -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
+                    sh "docker push quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT"   
                 }       
             }           
         }
@@ -72,5 +53,34 @@ pipeline {
                 }
             }
         }
+        stage('url test')
+            steps {
+                sh "curl http://100.109.4.7:8083/"
+            }
+        stage('docker prune'){
+            steps {
+                script {
+                    def doc_containers = sh(returnStdout: true, script: 'docker container ps -aq').replaceAll("\n", " ") 
+                    if (doc_containers) {
+                    sh "docker stop ${doc_containers}"
+                    sh "docker rm ${doc_containers}"
+                    }
+                }
+            }
+        }
+        stage('Maven release') {
+            manifest = readYaml file: 'manifest.yaml'
+            when {
+                        ${manifest.environment.production.deploy} 'true'
+            }
+            steps {
+                script{
+                    manifest = readYaml file: 'manifest.yaml'                 
+                    sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
+                    sh "mvn deploy -DnewVersion=${manifest.environment.production.version} --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
+                }
+            }
+        }
+        
     }      
 }    
