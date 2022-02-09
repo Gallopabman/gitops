@@ -54,9 +54,10 @@ pipeline {
         }
         stage('url test') {
             steps {
-                timeout(time: 2, unit: 'MINUTES') {
+                timeout(time: 3, unit: 'MINUTES') {
                     retry(100) {
-                        sh 'curl http://100.109.4.7:8083/'
+                        sh "curl --max-time 60 http://100.109.4.7:8083/"
+                    }
                 }
             }
         }
@@ -105,9 +106,9 @@ pipeline {
         }
         stage('url prof test') {
             steps {
-                timeout(time: 2, unit: 'MINUTES') {
-                    retry(100) {
-                        sh 'curl http://100.109.4.7:8083/'
+                timeout(time: 3, unit: 'MINUTES') {
+                    retry(60) {
+                        sh "curl http://100.109.4.7:8083/"
                     }
                 }
             }
