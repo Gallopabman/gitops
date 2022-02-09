@@ -4,8 +4,7 @@ pipeline {
     agent { node { label 'local' } }
 
     environment {
-    VERSION = "${manifest.environment.staging.version}.${BUILD_NUMBER}"
-    PROD_VERSION = "${manifest.environment.production.version}.${BUILD_NUMBER}"
+    VERSION = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -35,7 +34,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
-                    sh "docker build --build-arg VERSION=$VERSION -f docker-snapshot -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
+                    sh "docker build --build-arg VERSION=$VERSION -t quay.io/pablo_galleguillo/journals:$VERSION-SNAPSHOT ."
                     sh "docker push quay.io/pablo_galleguillo/journals:$VERSION-SNAPSHOT"   
                 }       
             }           
@@ -73,7 +72,7 @@ pipeline {
             steps {
                 script{
                     manifest = readYaml file: 'manifest.yaml'                 
-                    sh "mvn versions:set -DnewVersion=${manifest.environment.production.version} -f Code/pom.xml"
+                    sh "mvn versions:set -DnewVersion=${manifest.environment.production.version}.$VERSION -f Code/pom.xml"
                     sh "mvn deploy -DnewVersion=${manifest.environment.production.version}.$VERSION --settings Code/settings.xml -f Code/pom.xml -DskipTests"  
                 }
             }
@@ -83,7 +82,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'quay-pass', variable: 'SECRET')]) { 
                     sh "docker images"
                     sh "docker login quay.io -u pablo_galleguillo -p ${SECRET}"
-                    sh "docker build --build-arg VERSION=$PROD_VERSION -t quay.io/pablo_galleguillo/journals:${manifest.environment.staging.version}.$VERSION-SNAPSHOT ."
+                    sh "docker build --build-arg VERSION=$PROD_VERSION -t quay.io/pablo_galleguillo/journals:$VERSION ."
                     sh "docker push quay.io/pablo_galleguillo/journals:$VERSION"   
                 }       
             }           
