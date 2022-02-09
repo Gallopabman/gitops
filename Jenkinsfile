@@ -72,6 +72,12 @@ pipeline {
                 }
             }
         }
+        stage('jar clean')
+            steps {
+                script{
+                    sh "rm /Code/target/journals-${manifest.environment.staging.version}.$VERSION-SNAPSHOT.jar"
+                }
+            }
         stage('Maven release') {
             steps {
                 script{
