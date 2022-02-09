@@ -76,7 +76,7 @@ pipeline {
             steps {
                 script{
                     manifest = readYaml file: 'manifest.yaml'
-                    sh "rm /Code/target/journals-${manifest.environment.staging.version}.$VERSION-SNAPSHOT.jar"
+                    sh "rm /Code/target/*"
                 }
             }
         }
