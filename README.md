@@ -15,13 +15,17 @@ Repositorio para los assignments de la primer semana.
 
 ## GITOPS
 
-	1. Lo primero que debemos hacer para utilizar un manifiesto de gitops es importar los archivos necesarios, el Dockerfile, el pom.xml, el settings.xml y el application.properties que contienen los cambios necesarios para que la aplicación corra sin fallos en nuestros ambientes.
-	2. como punto siguiente creamos un Jenkinsfile que contenga todos los pasos realizados en las etapad de CI/CD y lo modificamos para que adquiera las variables como por ejemplo la version desde el archivo manifest que vamos a crear.
-	3. Ahora tenemos que crear un .yaml con el nombre que deseemos, en este caso utilice manifest.yaml, en el archivo manifest podemos listar todas las variables que necesitemos como los ambientes, versiones, urls, etc..
-	4. Ahora debemos ir a jenkins y crear nuestro job de gitops al igual que lo hicimos en los pasos de CI/CD, para que se revise el repo y la rama cada 5 minutos y se genere el build del job si hay algun cambio.
-	5. Una ves tengamos todo lo necesario pusheamos el repo y esperamos que jenkins realice el job de manera automatica, si todos los pasos fueron satisfactorios veremos lo siguiente en jenkins.
-![screenshot12](./screens/job.png)
+	1. Gitops como cultura de trabajo, en la que priman ciertos principios que son intrinsecos a a la cultura misma. 
+	- Debe haber una fuente unica de verdad "source of truth" con el estado deseado del sistema versionado e inmutable en un repositorio git
+	- El sistema por completo tiene que estar descrito de forma declarativa 
+	- Automatizado, los cambios que sean aprobados en el repositorio deben ser desplegados de forma automatica a traves de pipelines y herramientas de CI/CD 
+	- El entorno de ejecución debe estar bajo control constante, reconciliación continua, es quizas el principio mas importante y el mas dificil de aplicar 
+![screenshot12](./screens/gitops.png)
 
+## Trabajo realizado
+
+	1. Trate de buscar una forma de implementar gitops en este projecto aplicando los principios antes mencionados, algunos con mayor exito que otros
+	2. en todas las ramas del proyecto esta el codigo de manera declarativa, es decir, si vamos rama por rama ejecutando el codigo con las herramientas adecuadas, vamos a llegar siempre al mismo estado que se ah logrado ahora con la aplicación. Con esto logramos que todo este escrito de manera declarativa y utilizamos jenkins como herramienta de ci, tambien incluimos un versionado para poder tener control del sistema, y su estado esta versionado y es ininmutable en un solo repositorio de git, tratando asi de incluir estos 4 principios dentro de nuestro proyecto.
 	
 	
 ## Instrucciones para correr esta aplicación
