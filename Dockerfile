@@ -7,7 +7,7 @@ WORKDIR /usr/local/lib
 RUN apk add --update curl && \
     rm -rf /var/cache/apk/*
 
-COPY ./Code/target/journals-*.jar ./journals.jar
+COPY ./Code/target/journals-$VERSION.jar ./journals.jar
 
 EXPOSE 8080
 

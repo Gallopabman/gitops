@@ -72,6 +72,13 @@ pipeline {
                 }
             }
         }
+        stage('jar clean') {
+            steps {
+                script{
+                    sh "rm -dr ./Code/target/"
+                }
+            }
+        }
         stage('Maven release') {
             steps {
                 script{
